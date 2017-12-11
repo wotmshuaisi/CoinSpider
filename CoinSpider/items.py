@@ -24,7 +24,7 @@ class LocalCoinsItem(scrapy.Item):
     require_min = scrapy.Field()
     require_max = scrapy.Field()
     trade_bank = scrapy.Field()
-    trade_mthod = scrapy.Field()
+    trade_method = scrapy.Field()
     trade_msg = scrapy.Field()
     trade_location = scrapy.Field()
     time = scrapy.Field()

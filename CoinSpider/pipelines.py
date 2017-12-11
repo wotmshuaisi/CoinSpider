@@ -5,7 +5,7 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 from influxdb import InfluxDBClient
-from scrapy.conf import settings
+from CoinSpider import settings
 from scrapy.exceptions import DropItem
 import logging
 import traceback
@@ -18,6 +18,7 @@ class CoinspiderInfluxdb(object):
         "measurement": "localbitcoins",
         "tags": {
         },
+        "time": '',
         "fields": {
         }
     }
@@ -41,14 +42,18 @@ class CoinspiderInfluxdb(object):
             return item
         data_tpl = self.parent_tpl
         data_tpl['tags'] = {
+            'index_price': item['price'],
+            # 'index_time': item['time'],
+            'index_url': item['url'],
+        }
+        data_tpl['time'] = item['time']
+        data_tpl['fields'] = {
             'price': item['price'],
             'price_currency': item['price_currency'],
             'trade_bank': item['trade_bank'],
             'trade_method': item['trade_method'],
             'trade_location': item['trade_location'],
-            'time': item['time'],
-        }
-        data_tpl['fields'] = {
+            # 'create': item['time'],
             'user': item['user'],
             'email': item['email'],
             'url': item['url'],
