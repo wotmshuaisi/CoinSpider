@@ -22,7 +22,8 @@ class LocalbitcoinsSpider(scrapy.Spider):
         get page count
         generate url
         """
-        origin_data = json.loads(response.body)
+        origin_data = response.body.decode('utf-8')
+        origin_data = json.loads(origin_data)
         coin_data = origin_data['data'].get('ad_list')
         # get coins data
         for row in coin_data:

@@ -23,6 +23,10 @@ class CoinspiderInfluxdb(object):
         }
     }
 
+    def _check_repeat(self, url):
+        return bool(client.query(
+            "select * from localbitcoins where url='%s'" % url)))
+
     def open_spider(self, spider):
         _logging.info('create influxdb connections...')
         try:
@@ -40,6 +44,9 @@ class CoinspiderInfluxdb(object):
         # if current spider is `localcoins` then stop running other pipeline
         if spider.name != 'localbitcoins':
             return item
+        # if url already have break
+        if self._check_repeat(item['url']):
+            raise DropItem
         data_tpl = self.parent_tpl
         data_tpl['tags'] = {
             'index_price': item['price'],
