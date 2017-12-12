@@ -24,8 +24,8 @@ class CoinspiderInfluxdb(object):
     }
 
     def _check_repeat(self, url):
-        return bool(client.query(
-            "select * from localbitcoins where url='%s'" % url)))
+        return bool(self.client.query(
+            "select * from localbitcoins where url='%s'" % url))
 
     def open_spider(self, spider):
         _logging.info('create influxdb connections...')
