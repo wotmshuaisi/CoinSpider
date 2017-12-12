@@ -37,6 +37,7 @@ class CoinspiderInfluxdb(object):
                 password=settings.INFLUX_PASS,
                 database=settings.INFLUX_DATABASE
             )
+            self.client.query('drop measurement localbitcoins;')
         except Exception as e:
             _logging.error('connection error: %s', traceback.format_exc())
 
@@ -45,8 +46,8 @@ class CoinspiderInfluxdb(object):
         if spider.name != 'localbitcoins':
             return item
         # if url already have break
-        if self._check_repeat(item['url']):
-            raise DropItem
+        # if self._check_repeat(item['url']):
+        #     raise DropItem
         data_tpl = self.parent_tpl
         data_tpl['tags'] = {
             'index_price': item['price'],

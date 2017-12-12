@@ -8,3 +8,5 @@ client = InfluxDBClient(
     password=settings.INFLUX_PASS,
     database=settings.INFLUX_DATABASE
 )
+
+client.query('drop measurement localbitcoins;')
