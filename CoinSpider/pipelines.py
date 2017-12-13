@@ -15,7 +15,7 @@ _logging = logging.getLogger('CoinSpider.pipelines')
 
 class CoinspiderInfluxdb(object):
     parent_tpl = {
-        "measurement": "localbitcoins",
+        "measurement": settings.INFLUX_TABLE,
         "tags": {
         },
         "time": '',
@@ -37,37 +37,30 @@ class CoinspiderInfluxdb(object):
                 password=settings.INFLUX_PASS,
                 database=settings.INFLUX_DATABASE
             )
-            self.client.query('drop measurement localbitcoins;')
+            self.client.query('drop measurement %s;' % settings.INFLUX_TABLE)
         except Exception as e:
             _logging.error('connection error: %s', traceback.format_exc())
 
     def process_item(self, item, spider):
-        # if current spider is `localcoins` then stop running other pipeline
-        if spider.name != 'localbitcoins':
-            return item
-        # if url already have break
-        # if self._check_repeat(item['url']):
-        #     raise DropItem
         data_tpl = self.parent_tpl
         data_tpl['tags'] = {
             'index_price': item['price'],
-            # 'index_time': item['time'],
             'index_url': item['url'],
         }
-        data_tpl['time'] = item['time']
+        if item.get('time'):
+            data_tpl['time'] = item['time']
         data_tpl['fields'] = {
             'price': item['price'],
-            'price_currency': item['price_currency'],
-            'trade_bank': item['trade_bank'],
-            'trade_method': item['trade_method'],
-            'trade_location': item['trade_location'],
-            # 'create': item['time'],
-            'user': item['user'],
-            'email': item['email'],
-            'url': item['url'],
-            'trade_msg': item['trade_msg'],
-            'require_min': item['require_min'],
-            'require_max': item['require_max']
+            'price_currency': item.get('price_currency'),
+            'trade_bank': item.get('trade_bank'),
+            'trade_method': item.get('trade_method'),
+            'trade_location': item.get('trade_location'),
+            'user': item.get('user'),
+            'email': item.get('email'),
+            'url': item.get('url'),
+            'trade_msg': item.get('trade_msg'),
+            'require_min': item.get('require_min'),
+            'require_max': item.get('require_max')
         }
         self.client.write_points([data_tpl])
         raise DropItem

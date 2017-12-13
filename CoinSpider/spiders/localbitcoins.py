@@ -2,7 +2,7 @@
 import scrapy
 import json
 from scrapy.http import Request
-from CoinSpider.items import LocalCoinsItem
+from CoinSpider.items import CoinsItem
 
 
 class LocalbitcoinsSpider(scrapy.Spider):
@@ -41,7 +41,7 @@ class LocalbitcoinsSpider(scrapy.Spider):
             trade_msg = row.get('msg')
             trade_location = row.get('location_string')
             time = row.get('created_at')
-            yield LocalCoinsItem(
+            yield CoinsItem(
                 url=url,
                 user=user,
                 email=email,

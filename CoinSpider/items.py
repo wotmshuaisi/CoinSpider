@@ -15,7 +15,7 @@ class CoinspiderItem(scrapy.Item):
     pass
 
 
-class LocalCoinsItem(scrapy.Item):
+class CoinsItem(scrapy.Item):
     url = scrapy.Field()
     user = scrapy.Field()
     email = scrapy.Field()
