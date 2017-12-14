@@ -37,7 +37,6 @@ class CoinspiderInfluxdb(object):
                 password=settings.INFLUX_PASS,
                 database=settings.INFLUX_DATABASE
             )
-            self.client.query('drop measurement %s;' % settings.INFLUX_TABLE)
         except Exception as e:
             _logging.error('connection error: %s', traceback.format_exc())
 
