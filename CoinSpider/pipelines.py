@@ -50,7 +50,7 @@ class CoinspiderInfluxdb(object):
         if item.get('time'):
             data_tpl['time'] = item['time']
         data_tpl['fields'] = {
-            'price': item['price'],
+            'price': float(item['price']),
             'price_currency': item.get('price_currency'),
             'trade_bank': item.get('trade_bank'),
             'trade_method': item.get('trade_method'),
@@ -59,8 +59,8 @@ class CoinspiderInfluxdb(object):
             'email': item.get('email'),
             'url': item.get('url'),
             'trade_msg': item.get('trade_msg'),
-            'require_min': item.get('require_min'),
-            'require_max': item.get('require_max')
+            'require_min': float(item.get('require_min')),
+            'require_max': float(item.get('require_max'))
         }
         self.client.write_points([data_tpl])
         raise DropItem
