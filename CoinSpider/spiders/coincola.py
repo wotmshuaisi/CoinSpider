@@ -42,47 +42,6 @@ class CoincolaSpider(scrapy.Spider):
     def parse(self, response):
         """
         get pages
-        ---request---
-        country_code:CN
-        currency:
-        payment_provider:
-        limit:20
-        offset:0
-        sort_order:GENERAL
-        type:SELL
-        crypto_currency:BTC
-        _csrf:X5ZM9VDQ-TVPz6PqMNmUyUCCvS5Wo7wyEvH8
-        ---response---
-        {
-        "success": true,
-        "code": 0,
-        "message": "OK",
-        "data": {
-            "advertisements": [
-            {
-                "id": 41768,
-                "country_code": "CN",
-                "currency": "CNY",
-                "max_amount": 1000,
-                "min_amount": 50,
-                "payment_provider": "ALIPAY",
-                "price": 112277.19,
-                "advertiser": {
-                "id": 1000125924,
-                "name": "brianyu",
-                "reputation": {
-                    "feedback_score": 100,
-                    "trade_count": 2,
-                    "trusted_count": 2
-                },
-                "state": "ONLINE"
-                },
-                "crypto_currency": "BTC"
-            }
-            ],
-            "total": 100
-        }
-        }
         """
         # post format
         post_format = self.parent_format
@@ -105,7 +64,8 @@ class CoincolaSpider(scrapy.Spider):
         get json
         """
         # get total count 
-        json_data = json.loads(response.body)
+        origin_data = response.body.decode('utf-8')
+        json_data = json.loads(origin_data)
         if not json_data.get('success'):
             return
         json_data = json_data.get('data')
@@ -128,7 +88,8 @@ class CoincolaSpider(scrapy.Spider):
     
     def get_data(self, response):
         # get json data
-        json_data = json.loads(response.body)
+        origin_data = response.body.decode('utf-8')
+        json_data = json.loads(origin_data)
         if not json_data.get('success'):
             return
         json_data = json_data.get('data')
