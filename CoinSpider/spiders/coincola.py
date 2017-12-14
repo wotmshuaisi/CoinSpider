@@ -112,5 +112,6 @@ class CoincolaSpider(scrapy.Spider):
                 require_max=sell_order.get('max_amount'),
                 trade_method=sell_order.get('payment_provider'),
                 price=sell_order.get('price'),
+                user=user_str_format,
                 time=str(datetime.datetime.now())
             )
