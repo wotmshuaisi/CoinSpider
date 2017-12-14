@@ -45,6 +45,7 @@ class CoinspiderInfluxdb(object):
         data_tpl['tags'] = {
             'index_price': item['price'],
             'index_url': item['url'],
+            'spider': spider.name,
         }
         if item.get('time'):
             data_tpl['time'] = item['time']
